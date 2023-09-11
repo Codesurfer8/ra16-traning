@@ -7,3 +7,11 @@
 .container {
     width: 450px;
 }
+
+.items-list-wrapper {
+    border-radius: 5px;
+    border: 1px solid black;
+    min-height: 36px;
+
+    margin-top: 30px;
+}

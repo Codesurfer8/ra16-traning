@@ -10,19 +10,22 @@ function App() {
   const [arrState, setArr] = useState([]);
 
   const handleChange = (event) => {
-    return event.target.name === 'date' ? setDate(event.target.value) : setDistance(event.target.value)
+    event.target.name === 'date' ? setDate(event.target.value) : setDistance(event.target.value)
   }
 
   const handleClick = (event) => {
     event.preventDefault();
-    setArr((arrState) => [...arrState, {date: dateState, distance: distanceState, id: Math.random()}])
-    console.log(arrState)
+    setArr((arrState) => [...arrState, { date: dateState, distance: distanceState, id: Math.random() }])
   }
 
-  const handleClickDelete = (event) => {
-    event.preventDefault();
-    console.log(event.target)
+  const handleRemove = (id) => {
+    const newArrState = arrState.filter((item) => item.id !== id);
+    setArr(newArrState)
   }
+
+  arrState.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+  console.log(arrState)
 
   return (
     <div className='container'>
@@ -33,8 +36,8 @@ function App() {
         handleChangeDistance={handleChange}
         handleClick={handleClick}
       />
-      <div>
-        { arrState.map(item => <ItemOutput date={item.date} distance={item.distance} key={item.id} handleClickDelete={handleClickDelete}/>)}
+      <div className='items-list-wrapper'>
+        {arrState.map(item => <ItemOutput date={item.date} distance={item.distance} key={item.id} handleRemove={() => handleRemove(item.id)} />)}
       </div>
     </div>
   );

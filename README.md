@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Webpack5.
+
+[Руководство по настройке Webpack](https://webpack.js.org/guides/)
+[Руководство по настройке GitHub Actions](https://docs.github.com/en/actions/quickstart)
+![CI](https://github.com/codesurfer8/Game-goblin/actions/workflows/web.yml/badge.svg)
+
+
 ## Available Scripts
 
 In the project directory, you can run:
