@@ -1,46 +1,42 @@
 import { useState } from 'react';
+import { nanoid } from 'nanoid';
+import Form from './components/Form/Form';
+import List from './components/List/List';
 import './App.css';
 
-import InputData from './components/Input/InputData';
-import ItemOutput from './components/ItemList/ItemOutput';
+const INITIAL_NOTES = [
+  { id: nanoid(), date: '2023-09-28', km: 5 },
+  { id: nanoid(), date: '2023-09-27', km: 4 },
+];
 
-function App() {
-  const [dateState, setDate] = useState('');
-  const [distanceState, setDistance] = useState('');
-  const [arrState, setArr] = useState([]);
+export default function App() {
 
-  const handleChange = (event) => {
-    event.target.name === 'date' ? setDate(event.target.value) : setDistance(event.target.value)
-  }
+  const [notes, setNotes] = useState(INITIAL_NOTES);
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    setArr((arrState) => [...arrState, { date: dateState, distance: distanceState, id: Math.random() }])
-  }
+  const handleAddNote = (newNote) => {
+    const indexOfDate = notes.findIndex((item) => item.date === newNote.date);
+    if (indexOfDate === -1) {
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+    } else {
+      setNotes((prevNotes) => {
+        const newNotes = [...prevNotes];
+        newNotes[indexOfDate].km += newNote.km;
+        return newNotes;
+      });
+    }
+  };
 
-  const handleRemove = (id) => {
-    const newArrState = arrState.filter((item) => item.id !== id);
-    setArr(newArrState)
-  }
-
-  arrState.sort((a, b) => new Date(b.date) - new Date(a.date))
-
-  console.log(arrState)
+  const handleDeleteNote = (id) => {
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+  };
 
   return (
-    <div className='container'>
-      <InputData
-        dateState={dateState}
-        distanceState={distanceState}
-        handleChangeDate={handleChange}
-        handleChangeDistance={handleChange}
-        handleClick={handleClick}
-      />
-      <div className='items-list-wrapper'>
-        {arrState.map(item => <ItemOutput date={item.date} distance={item.distance} key={item.id} handleRemove={() => handleRemove(item.id)} />)}
-      </div>
+    <div className="app">
+      <header>
+        <h1 className='title'>Учет пройденного расстояния</h1>
+      </header>
+      <Form onSubmit={handleAddNote} />
+      <List notes={notes} onDeleteNote={handleDeleteNote} />
     </div>
   );
 }
-
-export default App;
